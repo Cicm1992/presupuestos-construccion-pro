@@ -1,0 +1,1598 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Presupuestos Construcción PRO</title>
+
+  <!-- =====================
+       ESTILO "BONITO" PRO
+       ===================== -->
+  <style>
+    /* Theme tokens */
+    :root{
+      --bg0:#0b1020;
+      --bg1:#0f1733;
+      --card:#ffffff;
+      --text:#0c1020;
+      --muted:#5d6476;
+      --border:rgba(18, 32, 72, .12);
+      --shadow: 0 10px 28px rgba(2, 8, 23, .10);
+      --shadow2: 0 2px 8px rgba(2, 8, 23, .08);
+
+      --primary:#4f46e5;      /* indigo */
+      --primary2:#22c55e;     /* green accent */
+      --danger:#ef4444;       /* red */
+      --warn:#f59e0b;         /* amber */
+
+      --chip:#0d0d0e;
+      --chipText:#111827;
+
+      --radius:16px;
+      --radius2:999px;
+      --ring: 0 0 0 4px rgba(79,70,229,.16);
+
+      --tableStripe: rgba(2, 6, 23, .02);
+    }
+
+    /* Dark mode auto */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --card: rgba(255,255,255,.06);
+        --text: #151516;
+        --muted: rgba(232,236,255,.65);
+        --border: rgba(255,255,255,.12);
+        --shadow: 0 10px 28px rgba(0,0,0,.38);
+        --shadow2: 0 2px 8px rgba(0,0,0,.28);
+        --chip: rgba(255,255,255,.10);
+        --chipText:#0f0f0f;
+        --tableStripe: rgba(255,255,255,.03);
+      }
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(22, 22, 22, 0.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(34,197,94,.22), transparent 55%),
+        radial-gradient(900px 500px at 55% 110%, rgba(245,158,11,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+      padding:22px;
+    }
+
+    /* App shell */
+    .shell{
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(79,70,229,1), rgba(34,197,94,1));
+      box-shadow: 0 10px 20px rgba(221, 208, 208, 0.2);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;inset:-40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 35%);
+      transform: rotate(18deg);
+    }
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.02em;
+      color: rgba(247, 240, 240, 0.92);
+    }
+    .subtitle{
+      margin:4px 0 0;
+      font-size:13px;
+      color: rgba(252, 245, 245, 0.68);
+    }
+
+    /* Cards & layout */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding:14px;
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(8px);
+    }
+    .card.glow{
+      position:relative;
+      overflow:hidden;
+    }
+    .card.glow:before{
+      content:"";
+      position:absolute;inset:-2px;
+      background: radial-gradient(600px 180px at 30% 0%, rgba(79,70,229,.24), transparent 65%),
+                  radial-gradient(600px 180px at 85% 40%, rgba(34,197,94,.14), transparent 60%);
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+
+    input,select,textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.95);
+      color:#161616;
+      caret-color:#000;
+      outline:none;
+      transition: box-shadow .15s ease, transform .05s ease, border-color .15s ease;
+    }
+    input::placeholder, textarea::placeholder{ color: rgba(0,0,0,.55); }
+    select{ color:#000; }
+
+    @media (prefers-color-scheme: dark){
+      input,select,textarea{
+        background: rgba(255,255,255,.08);
+        color: #030303;
+        caret-color:#141414;
+      }
+      input::placeholder, textarea::placeholder{ color: rgba(20, 19, 19, 0.55); }
+      select{ color:#141414; }
+    }
+
+    input:focus,select:focus,textarea:focus{
+      box-shadow: var(--ring);
+      border-color: rgba(79,70,229,.55);
+    }
+    textarea{min-height:66px;resize:vertical}
+
+    /* Buttons */
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius: 14px;
+      padding:10px 12px;
+      font-weight:650;
+      letter-spacing:-.01em;
+      color: rgba(10, 10, 10, 0.92);
+      background: rgba(255,255,255,.10);
+      box-shadow: var(--shadow2);
+      transition: transform .08s ease, filter .15s ease, background .15s ease;
+      cursor:pointer;
+      width:auto;
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      border: 1px solid rgba(79,70,229,.35);
+      background: linear-gradient(135deg, rgba(79,70,229,1), rgba(79,70,229,.75));
+    }
+    .btn.success{
+      border: 1px solid rgba(34,197,94,.35);
+      background: linear-gradient(135deg, rgba(34,197,94,1), rgba(34,197,94,.75));
+    }
+    .btn.warn{
+      border: 1px solid rgba(245,158,11,.35);
+      background: linear-gradient(135deg, rgba(245,158,11,1), rgba(245,158,11,.72));
+    }
+    .btn.danger{
+      border: 1px solid rgba(239,68,68,.35);
+      background: linear-gradient(135deg, rgba(239,68,68,1), rgba(239,68,68,.74));
+    }
+    .btn.ghost{
+      color: rgba(19, 18, 18, 0.92);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+
+    /* Pills / chips */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: var(--radius2);
+      padding:6px 12px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(238, 233, 233, 0.86);
+      font-size:12px;
+      box-shadow: var(--shadow2);
+      user-select:none;
+    }
+    .pill .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--primary2);
+      box-shadow: 0 0 0 4px rgba(34,197,94,.20);
+    }
+    .pill.warn .dot{background:var(--warn); box-shadow:0 0 0 4px rgba(245,158,11,.20)}
+    .pill.primary .dot{background:var(--primary); box-shadow:0 0 0 4px rgba(79,70,229,.20)}
+    .pill.danger .dot{background:var(--danger); box-shadow:0 0 0 4px rgba(239,68,68,.20)}
+
+    /* Tabs */
+    .tabs{
+      display:flex;gap:8px;flex-wrap:wrap;
+      padding:8px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow2);
+      width:fit-content;
+    }
+    .tab{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.86);
+      border-radius: 999px;
+      padding:9px 12px;
+      cursor:pointer;
+      font-weight:650;
+      transition: filter .15s ease, transform .08s ease, background .15s ease;
+    }
+    .tab:hover{filter:brightness(1.06)}
+    .tab:active{transform: translateY(1px)}
+    .tab.active{
+      background: linear-gradient(135deg, rgba(79,70,229,1), rgba(34,197,94,.65));
+      border-color: rgba(255,255,255,.18);
+      color:#0e0d0d;
+    }
+
+    /* Tables */
+    table{width:100%;border-collapse:collapse;border-radius:14px;overflow:hidden}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+    th{
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:11px;
+      color: rgba(20, 20, 20, 0.7);
+      background: rgba(255,255,255,.08);
+    }
+    td{font-size:14px;color:var(--text)}
+    .right{text-align:right}
+    tbody tr:nth-child(even){background: var(--tableStripe)}
+
+    /* KPI cards */
+    .kpi{display:grid;grid-template-columns:repeat(6,minmax(160px,1fr));gap:10px;margin-top:12px}
+    .kpi .item{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      padding:10px;
+      box-shadow: var(--shadow2);
+    }
+    .kpi .small{font-size:12px;color:rgba(17, 16, 16, 0.7)}
+    .kpi .val{font-size:20px;font-weight:800;color:rgba(19, 18, 18, 0.92)}
+    .kpi .item.total .val{
+      background: linear-gradient(135deg, rgba(79,70,229,1), rgba(34,197,94,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    /* Helpers */
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .small{font-size:12px;color:rgba(20, 19, 19, 0.68)}
+    .muted{color:rgba(248, 241, 241, 0.68);font-size:13px}
+    .hide{display:none}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .kpi{grid-template-columns:repeat(2,minmax(160px,1fr))}
+    }
+    @media (max-width: 620px){
+      .grid{gap:10px}
+      body{padding:14px}
+      .tabs{width:100%}
+    }
+  </style>
+
+  <!-- PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.29/dist/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>Presupuestos de Construcción PRO</h1>
+        <div class="subtitle">Tema moderno + modo oscuro • Catálogo • Plantillas • m² • Export CSV/JSON/PDF</div>
+      </div>
+    </div>
+
+    <div class="row" style="justify-content:flex-end;gap:10px">
+      <span class="pill primary"><span class="dot"></span><span id="badgeItems">0 ítems</span></span>
+      <span class="pill"><span class="dot"></span><span id="badgeTotal">Total: $0</span></span>
+      <span class="pill warn"><span class="dot"></span><span id="badgeAutosave">Autosave: ON</span></span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabPres" onclick="showTab('pres')">Presupuesto</button>
+    <button class="tab" id="tabCat" onclick="showTab('cat')">Catálogo</button>
+    <button class="tab" id="tabQuick" onclick="showTab('quick')">Medición m²</button>
+    <button class="tab" id="tabSet" onclick="showTab('set')">Config</button>
+  </div>
+
+  <!-- =======================
+       PRESUPUESTO (MISMA APP)
+       ======================= -->
+  <section id="pres" class="grid" style="margin-top:12px;">
+    <div class="card glow" style="grid-column:span 8;">
+      <div class="grid">
+        <div style="grid-column:span 4">
+          <label>Presupuesto</label>
+          <select id="presSelect" onchange="loadSelectedBudget()"></select>
+          <div class="hint">Tip: “Duplicar” para versiones (v2, v3...).</div>
+        </div>
+
+        <div style="grid-column:span 8" class="actions" style="align-items:end;justify-content:flex-end">
+          <button class="btn ghost" onclick="newBudget()">Nuevo</button>
+          <button class="btn ghost" onclick="duplicateBudget()">Duplicar</button>
+          <button class="btn ghost" onclick="renameBudget()">Renombrar</button>
+          <button class="btn danger" onclick="deleteBudget()">Eliminar</button>
+          <button class="btn warn" onclick="exportJSON()">Backup JSON</button>
+          <button class="btn warn" onclick="importJSON()">Importar</button>
+        </div>
+
+        <div style="grid-column:span 6">
+          <label>Cliente</label>
+          <input id="cliente" placeholder="Nombre del cliente" />
+        </div>
+        <div style="grid-column:span 3">
+          <label>Fecha</label>
+          <input id="fecha" type="date" />
+        </div>
+        <div style="grid-column:span 3">
+          <label>Moneda</label>
+          <select id="moneda">
+            <option value="$">$</option>
+            <option value="CLP">CLP</option>
+            <option value="USD">USD</option>
+            <option value="UF">UF</option>
+          </select>
+        </div>
+        <div style="grid-column:span 12">
+          <label>Obra / Descripción</label>
+          <textarea id="obra" placeholder="Ej: Galpón 12x24m, estructura metálica, cubierta zincalum, fundaciones..."></textarea>
+        </div>
+
+        <div style="grid-column:span 6">
+          <label>Plantillas</label>
+          <select id="plantilla">
+            <option value="">— Seleccionar —</option>
+            <option value="casa">Casa (base)</option>
+            <option value="techo">Techo / Techumbre (base)</option>
+            <option value="galpon">Galpón (base)</option>
+          </select>
+          <div class="hint">Agrega una estructura típica (editable).</div>
+        </div>
+        <div style="grid-column:span 6" class="actions" style="align-items:end;justify-content:flex-end">
+          <button class="btn primary" onclick="applyTemplate()">Aplicar</button>
+          <button class="btn ghost" onclick="clearItems()">Vaciar ítems</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card glow" style="grid-column:span 4;">
+      <div class="grid">
+        <div style="grid-column:span 6">
+          <label>GG (%)</label>
+          <input id="gg" type="number" step="0.01" value="10" />
+        </div>
+        <div style="grid-column:span 6">
+          <label>Utilidad (%)</label>
+          <input id="utilidad" type="number" step="0.01" value="15" />
+        </div>
+
+        <div style="grid-column:span 12">
+          <label>Utilidad sobre</label>
+          <select id="utilBase">
+            <option value="directo_gg">Directo + GG</option>
+            <option value="directo">Solo Directo</option>
+          </select>
+        </div>
+
+        <div style="grid-column:span 6">
+          <label>Contingencia (%)</label>
+          <input id="cont" type="number" step="0.01" value="0" />
+        </div>
+        <div style="grid-column:span 6">
+          <label>Descuento (%)</label>
+          <input id="desc" type="number" step="0.01" value="0" />
+        </div>
+
+        <!-- ====== TU COBRO (MULTI-MODO) ====== -->
+        <div style="grid-column:span 6">
+          <label>Superficie (m²)</label>
+          <input id="superficieM2" type="number" step="0.01" value="0" />
+          <div class="hint">Usado si cobras $ por m².</div>
+        </div>
+        <div style="grid-column:span 6">
+          <label>Jornadas (jor)</label>
+          <input id="jornadas" type="number" step="0.01" value="0" />
+          <div class="hint">Usado si cobras $ por jornada.</div>
+        </div>
+
+        <div style="grid-column:span 6">
+          <label>Tu cobro (modo)</label>
+          <select id="cobroModo">
+            <option value="fixed">Monto fijo</option>
+            <option value="pct_direct">% del directo</option>
+            <option value="per_m2">$ por m²</option>
+            <option value="per_jor">$ por jornada</option>
+          </select>
+        </div>
+        <div style="grid-column:span 6">
+          <label id="cobroValorLabel">Tu cobro (monto)</label>
+          <input id="cobroValor" type="number" step="0.01" value="0" />
+          <div class="hint" id="cobroCalc">Honorarios calculados: $0</div>
+        </div>
+        <!-- ====== /TU COBRO ====== -->
+
+        <div style="grid-column:span 6">
+          <label>IVA (%)</label>
+          <input id="iva" type="number" step="0.01" value="19" />
+        </div>
+        <div style="grid-column:span 6">
+          <label>Merma default (%)</label>
+          <input id="despDefault" type="number" step="0.01" value="0" />
+        </div>
+
+        <div style="grid-column:span 12">
+          <label>Logo (PDF)</label>
+          <input id="logoFile" type="file" accept="image/*" />
+          <div class="hint">Se guarda dentro del presupuesto (base64).</div>
+        </div>
+
+        <div style="grid-column:span 12" class="actions" style="justify-content:flex-end">
+          <button class="btn success" onclick="saveBudget()">Guardar</button>
+          <button class="btn warn" onclick="exportCSV()">CSV</button>
+          <button class="btn primary" onclick="exportPDF()">PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card glow" style="grid-column:span 12;">
+      <div class="grid">
+        <div style="grid-column:span 2">
+          <label>Partida</label>
+          <select id="partida">
+            <option>Preliminares</option>
+            <option>Obra gruesa</option>
+            <option>Estructura</option>
+            <option>Techumbre</option>
+            <option>Terminaciones</option>
+            <option>Instalaciones</option>
+            <option>Mano de obra</option>
+            <option>Equipos</option>
+            <option>Subcontratos</option>
+            <option>Transporte</option>
+            <option>Otros</option>
+          </select>
+        </div>
+
+        <div style="grid-column:span 4">
+          <label>Ítem (catálogo)</label>
+          <input id="item" list="catalogList" placeholder="Ej: Zincalum, Hormigón, Maestro..." />
+          <datalist id="catalogList"></datalist>
+          <div class="hint">Autocompleta desde tu catálogo.</div>
+        </div>
+
+        <div style="grid-column:span 1">
+          <label>Unidad</label>
+          <input id="unidad" placeholder="m2" />
+        </div>
+
+        <div style="grid-column:span 1">
+          <label>Cantidad</label>
+          <input id="cantidad" type="number" step="0.0001" value="1" />
+        </div>
+
+        <div style="grid-column:span 2">
+          <label>P.U.</label>
+          <input id="pu" type="number" step="0.01" value="0" />
+        </div>
+
+        <div style="grid-column:span 1">
+          <label>Merma (%)</label>
+          <input id="desp" type="number" step="0.01" value="0" />
+        </div>
+
+        <div style="grid-column:span 1">
+          <label>&nbsp;</label>
+          <button class="btn primary" onclick="addItem()">Agregar</button>
+        </div>
+
+        <div style="grid-column:span 12">
+          <label>Nota del ítem (opcional)</label>
+          <input id="notaItem" placeholder="Ej: Incluye fijaciones / anticorrosivo / transporte..." />
+        </div>
+      </div>
+    </div>
+
+    <div class="card glow" style="grid-column:span 12;">
+      <div class="row">
+        <div class="small">Doble click en un ítem para editar rápido.</div>
+        <button class="btn ghost" onclick="toggleResumen()">Resumen por partida</button>
+      </div>
+
+      <div style="overflow:auto;margin-top:10px">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>#</th><th>Partida</th><th>Ítem</th><th>Un.</th>
+              <th class="right">Cant.</th><th class="right">Merma</th>
+              <th class="right">P.U.</th><th class="right">Subtotal</th><th>Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="kpi">
+        <div class="item"><div class="small">Costo directo</div><div class="val" id="kpiDirecto">$0</div></div>
+        <div class="item"><div class="small">+ GG</div><div class="val" id="kpiGG">$0</div></div>
+        <div class="item"><div class="small">+ Utilidad</div><div class="val" id="kpiUtil">$0</div></div>
+        <div class="item"><div class="small">+ Contingencia</div><div class="val" id="kpiCont">$0</div></div>
+        <div class="item"><div class="small">+ Honorarios</div><div class="val" id="kpiHonor">$0</div></div>
+        <div class="item"><div class="small">- Descuento</div><div class="val" id="kpiDesc">$0</div></div>
+        <div class="item"><div class="small">Subtotal (sin IVA)</div><div class="val" id="kpiSub">$0</div></div>
+        <div class="item"><div class="small">IVA</div><div class="val" id="kpiIVA">$0</div></div>
+        <div class="item total"><div class="small">TOTAL</div><div class="val" id="kpiTotal">$0</div></div>
+      </div>
+
+      <div id="resumenWrap" class="hide" style="overflow:auto;margin-top:10px">
+        <table id="tablaResumen">
+          <thead>
+            <tr><th>Partida</th><th class="right">Subtotal</th><th class="right">% del directo</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATALOGO ============ -->
+  <section id="cat" class="grid hide" style="margin-top:12px;">
+    <div class="card glow" style="grid-column:span 12;">
+      <div class="grid">
+        <div style="grid-column:span 4">
+          <label>Buscar</label>
+          <input id="catSearch" placeholder="Zincalum / Hormigón / Maestro..." oninput="renderCatalog()" />
+        </div>
+        <div style="grid-column:span 2">
+          <label>Tipo</label>
+          <select id="catTipo" onchange="renderCatalog()">
+            <option value="">Todos</option>
+            <option>Material</option><option>Mano de obra</option><option>Equipo</option>
+            <option>Subcontrato</option><option>Transporte</option><option>Otro</option>
+          </select>
+        </div>
+        <div style="grid-column:span 6" class="actions" style="align-items:end;justify-content:flex-end">
+          <button class="btn ghost" onclick="seedCatalog()">Catálogo base</button>
+          <button class="btn warn" onclick="exportCatalogJSON()">Exportar</button>
+          <button class="btn warn" onclick="importCatalogJSON()">Importar</button>
+          <button class="btn danger" onclick="clearCatalog()">Vaciar</button>
+        </div>
+
+        <div style="grid-column:span 3"><label>Nombre</label><input id="catName" placeholder="Ej: Zincalum 0.4mm" /></div>
+        <div style="grid-column:span 2"><label>Tipo</label>
+          <select id="catNewTipo">
+            <option>Material</option><option>Mano de obra</option><option>Equipo</option>
+            <option>Subcontrato</option><option>Transporte</option><option>Otro</option>
+          </select>
+        </div>
+        <div style="grid-column:span 1"><label>Unidad</label><input id="catUnit" placeholder="m2" /></div>
+        <div style="grid-column:span 2"><label>P.U.</label><input id="catPU" type="number" step="0.01" value="0" /></div>
+        <div style="grid-column:span 2"><label>Merma (%)</label><input id="catMerma" type="number" step="0.01" value="0" /></div>
+        <div style="grid-column:span 2"><label>&nbsp;</label><button class="btn success" onclick="addCatalogItem()">Agregar</button></div>
+      </div>
+
+      <div style="overflow:auto;margin-top:10px">
+        <table id="tablaCatalogo">
+          <thead><tr><th>Nombre</th><th>Tipo</th><th>Unidad</th><th class="right">P.U.</th><th class="right">Merma</th><th>Acción</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="hint">Doble click para editar una fila. Botón “Usar” rellena el formulario del presupuesto.</div>
+    </div>
+  </section>
+
+  <!-- ============ QUICK m² ============ -->
+  <section id="quick" class="grid hide" style="margin-top:12px;">
+    <div class="card glow" style="grid-column:span 12;">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div style="font-weight:800;color:rgba(14, 13, 13, 0.92)">Medición rápida por m²</div>
+          <div class="muted">Genera ítems típicos desde superficie (útil para techos/galpones).</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div style="grid-column:span 3">
+          <label>Tipo</label>
+          <select id="quickTipo">
+            <option value="techo">Techo / Techumbre</option>
+            <option value="galpon">Galpón</option>
+            <option value="casa">Casa (estimación)</option>
+          </select>
+        </div>
+        <div style="grid-column:span 3">
+          <label>Superficie (m²)</label>
+          <input id="quickM2" type="number" step="0.01" value="100" />
+        </div>
+        <div style="grid-column:span 3">
+          <label>Precio objetivo por m²</label>
+          <input id="quickPU" type="number" step="0.01" value="0" />
+          <div class="hint">Opcional: reparte por partidas.</div>
+        </div>
+        <div style="grid-column:span 3" class="actions" style="align-items:end;justify-content:flex-end">
+          <button class="btn primary" onclick="quickGenerate()">Generar</button>
+          <button class="btn ghost" onclick="quickAddSingle()">Ítem global</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONFIG ============ -->
+  <section id="set" class="grid hide" style="margin-top:12px;">
+    <div class="card glow" style="grid-column:span 12;">
+      <div style="font-weight:800;color:rgba(14, 13, 13, 0.92)">Configuración</div>
+      <div class="grid" style="margin-top:12px">
+        <div style="grid-column:span 4">
+          <label>Autosave</label>
+          <select id="autosave">
+            <option value="on">ON</option>
+            <option value="off">OFF</option>
+          </select>
+        </div>
+        <div style="grid-column:span 4">
+          <label>Decimales (visual)</label>
+          <select id="decimals">
+            <option value="2">2</option><option value="0">0</option><option value="3">3</option><option value="4">4</option>
+          </select>
+        </div>
+        <div style="grid-column:span 4">
+          <label>Notas en PDF</label>
+          <select id="pdfNotes">
+            <option value="on">Mostrar</option>
+            <option value="off">Ocultar</option>
+          </select>
+        </div>
+      </div>
+      <div class="hint">Todo se guarda en tu navegador. Usa “Backup JSON” para respaldo.</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- =========================
+     LÓGICA: MISMA QUE PRO
+     ========================= -->
+<script>
+/** =========================
+ *  MODELO / STORAGE
+ *  ========================= */
+const STORE_KEY = "presupuestoPRO_v1";
+const CATALOG_KEY = "catalogoPRO_v1";
+const SETTINGS_KEY = "settingsPRO_v1";
+
+function todayISO(){
+  const d = new Date();
+  const pad = (x)=> String(x).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+function safeNum(v){ v = Number(v); return isFinite(v) ? v : 0; }
+function esc(s){ return String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+
+function getSettings(){
+  const d = { autosave:"on", decimals:"2", pdfNotes:"on" };
+  try { return {...d, ...(JSON.parse(localStorage.getItem(SETTINGS_KEY))||{})}; } catch { return d; }
+}
+function setSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+
+function loadAllBudgets(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  }catch{ return []; }
+}
+function saveAllBudgets(arr){
+  localStorage.setItem(STORE_KEY, JSON.stringify(arr));
+}
+
+function defaultBudget(name="Presupuesto 1"){
+  return {
+    id: crypto.randomUUID(),
+    name,
+    cliente:"",
+    fecha: todayISO(),
+    moneda:"$",
+    obra:"",
+    gg:10, utilidad:15, utilBase:"directo_gg",
+    cont:0, desc:0, iva:19,
+    despDefault:0,
+
+    // ✅ NUEVO: bases para tu cobro
+    superficieM2: 0,
+    jornadas: 0,
+    cobroModo: "fixed",      // fixed | pct_direct | per_m2 | per_jor
+    cobroValor: 0,           // monto / % / $por m2 / $por jor
+
+    logoDataUrl:"",
+    items:[]
+  };
+}
+
+let budgets = loadAllBudgets();
+if(budgets.length===0){ budgets = [defaultBudget()]; saveAllBudgets(budgets); }
+let activeId = budgets[0].id;
+
+function getActive(){ return budgets.find(b=>b.id===activeId) || budgets[0]; }
+function setActive(b){
+  activeId = b.id;
+  renderBudgetSelect();
+  fillBudgetForm(b);
+  renderItems();
+  recalc();
+}
+
+/** =========================
+ *  CATALOGO
+ *  ========================= */
+function loadCatalog(){
+  try{
+    const raw = localStorage.getItem(CATALOG_KEY);
+    const c = raw ? JSON.parse(raw) : [];
+    return Array.isArray(c) ? c : [];
+  }catch{ return []; }
+}
+function saveCatalog(c){ localStorage.setItem(CATALOG_KEY, JSON.stringify(c)); }
+let catalog = loadCatalog();
+
+function seedCatalog(){
+  if(!confirm("¿Cargar un catálogo base de ejemplo? (agrega/actualiza)")) return;
+  const base = [
+    {name:"Hormigón H20", tipo:"Material", unidad:"m3", pu:0, merma:0},
+    {name:"Acero A630", tipo:"Material", unidad:"kg", pu:0, merma:0},
+    {name:"Zincalum 0.4mm", tipo:"Material", unidad:"m2", pu:0, merma:5},
+    {name:"OSB 11mm", tipo:"Material", unidad:"m2", pu:0, merma:5},
+    {name:"Pernos + fijaciones", tipo:"Material", unidad:"gl", pu:0, merma:0},
+    {name:"Pintura anticorrosiva", tipo:"Material", unidad:"gl", pu:0, merma:0},
+    {name:"Maestro 1ra", tipo:"Mano de obra", unidad:"jor", pu:0, merma:0},
+    {name:"Ayudante", tipo:"Mano de obra", unidad:"jor", pu:0, merma:0},
+    {name:"Soldador", tipo:"Mano de obra", unidad:"jor", pu:0, merma:0},
+    {name:"Arriendo grúa horquilla", tipo:"Equipo", unidad:"día", pu:0, merma:0},
+    {name:"Flete / Transporte", tipo:"Transporte", unidad:"viaje", pu:0, merma:0},
+    {name:"Montaje estructura metálica (subcontrato)", tipo:"Subcontrato", unidad:"m2", pu:0, merma:0},
+  ];
+  const map = new Map(catalog.map(x=>[x.name.toLowerCase(), x]));
+  for(const it of base){
+    const key = it.name.toLowerCase();
+    if(map.has(key)){
+      const cur = map.get(key);
+      map.set(key, {...it, pu: safeNum(cur.pu)||safeNum(it.pu), merma: safeNum(cur.merma)||safeNum(it.merma)});
+    }else map.set(key, it);
+  }
+  catalog = Array.from(map.values()).sort((a,b)=>a.name.localeCompare(b.name));
+  saveCatalog(catalog);
+  renderCatalog();
+  refreshCatalogDatalist();
+  alert("Catálogo base cargado/actualizado.");
+}
+
+function clearCatalog(){
+  if(!confirm("¿Vaciar el catálogo completo?")) return;
+  catalog = [];
+  saveCatalog(catalog);
+  renderCatalog();
+  refreshCatalogDatalist();
+}
+function refreshCatalogDatalist(){
+  const dl = document.getElementById("catalogList");
+  dl.innerHTML = "";
+  catalog.forEach(c=>{
+    const opt = document.createElement("option");
+    opt.value = c.name;
+    dl.appendChild(opt);
+  });
+}
+
+/** =========================
+ *  TABS
+ *  ========================= */
+function showTab(id){
+  ["pres","cat","quick","set"].forEach(x=>document.getElementById(x).classList.toggle("hide", x!==id));
+  ["tabPres","tabCat","tabQuick","tabSet"].forEach(t=>document.getElementById(t).classList.remove("active"));
+  ({pres:"tabPres",cat:"tabCat",quick:"tabQuick",set:"tabSet"}[id] && document.getElementById(({pres:"tabPres",cat:"tabCat",quick:"tabQuick",set:"tabSet"}[id])).classList.add("active"));
+  if(id==="cat"){ renderCatalog(); }
+  if(id==="set"){ renderSettings(); }
+}
+
+/** =========================
+ *  FORMATOS
+ *  ========================= */
+function fmtMoney(n){
+  const s = getSettings();
+  const d = Number(s.decimals || 2);
+  const b = getActive();
+  const m = b.moneda || "$";
+  const val = Number(n || 0);
+  const txt = val.toLocaleString("es-CL", {maximumFractionDigits:d, minimumFractionDigits: Math.min(2,d)});
+  return (m === "$" ? "$" : m + " ") + txt;
+}
+function fmtQty(n){
+  const s = getSettings();
+  const d = Math.min(4, Math.max(0, Number(s.decimals||2)));
+  const val = Number(n||0);
+  return val.toLocaleString("es-CL", {maximumFractionDigits:d});
+}
+
+/** =========================
+ *  COBRO (HELPERS)
+ *  ========================= */
+function updateCobroUI(){
+  const modo = document.getElementById("cobroModo").value;
+  const lbl = document.getElementById("cobroValorLabel");
+  if(modo==="fixed") lbl.textContent = "Tu cobro (monto)";
+  else if(modo==="pct_direct") lbl.textContent = "Tu cobro (% del directo)";
+  else if(modo==="per_m2") lbl.textContent = "Tu cobro ($ por m²)";
+  else if(modo==="per_jor") lbl.textContent = "Tu cobro ($ por jornada)";
+}
+function computeHonorarios(b, directo){
+  const modo = (b.cobroModo || "fixed");
+  const val = safeNum(b.cobroValor);
+  const m2 = safeNum(b.superficieM2);
+  const jor = safeNum(b.jornadas);
+
+  if(modo==="pct_direct") return directo * (val/100);
+  if(modo==="per_m2") return m2 * val;
+  if(modo==="per_jor") return jor * val;
+  return val; // fixed
+}
+function honorariosLabelForPDF(b){
+  const modo = (b.cobroModo || "fixed");
+  const val = safeNum(b.cobroValor);
+  const m2 = safeNum(b.superficieM2);
+  const jor = safeNum(b.jornadas);
+
+  if(modo==="pct_direct") return `Honorarios (${val.toFixed(2)}% del directo)`;
+  if(modo==="per_m2") return `Honorarios (${fmtMoney(val)} por m² × ${fmtQty(m2)} m²)`;
+  if(modo==="per_jor") return `Honorarios (${fmtMoney(val)} por jor × ${fmtQty(jor)} jor)`;
+  return "Honorarios (monto fijo)";
+}
+
+/** =========================
+ *  PRESUPUESTOS CRUD
+ *  ========================= */
+function renderBudgetSelect(){
+  const sel = document.getElementById("presSelect");
+  sel.innerHTML = "";
+  budgets.forEach(b=>{
+    const o = document.createElement("option");
+    o.value = b.id;
+    o.textContent = b.name;
+    if(b.id===activeId) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+function loadSelectedBudget(){
+  const id = document.getElementById("presSelect").value;
+  const b = budgets.find(x=>x.id===id);
+  if(b) setActive(b);
+}
+function newBudget(){
+  const name = prompt("Nombre del nuevo presupuesto:", `Presupuesto ${budgets.length+1}`) || `Presupuesto ${budgets.length+1}`;
+  const b = defaultBudget(name);
+  budgets.unshift(b);
+  saveAllBudgets(budgets);
+  setActive(b);
+}
+function duplicateBudget(){
+  const b = structuredClone(getActive());
+  b.id = crypto.randomUUID();
+  b.name = (b.name || "Presupuesto") + " (copia)";
+  budgets.unshift(b);
+  saveAllBudgets(budgets);
+  setActive(b);
+}
+function renameBudget(){
+  const b = getActive();
+  const name = prompt("Nuevo nombre:", b.name || "Presupuesto") || b.name;
+  b.name = name;
+  saveAllBudgets(budgets);
+  renderBudgetSelect();
+}
+function deleteBudget(){
+  if(budgets.length<=1) return alert("Debe existir al menos un presupuesto.");
+  const b = getActive();
+  if(!confirm(`¿Eliminar "${b.name}"?`)) return;
+  budgets = budgets.filter(x=>x.id!==b.id);
+  saveAllBudgets(budgets);
+  setActive(budgets[0]);
+}
+
+/** =========================
+ *  FORM / MODEL
+ *  ========================= */
+function fillBudgetForm(b){
+  document.getElementById("cliente").value = b.cliente || "";
+  document.getElementById("fecha").value = b.fecha || todayISO();
+  document.getElementById("moneda").value = b.moneda || "$";
+  document.getElementById("obra").value = b.obra || "";
+  document.getElementById("gg").value = safeNum(b.gg);
+  document.getElementById("utilidad").value = safeNum(b.utilidad);
+  document.getElementById("utilBase").value = b.utilBase || "directo_gg";
+  document.getElementById("cont").value = safeNum(b.cont);
+  document.getElementById("desc").value = safeNum(b.desc);
+  document.getElementById("iva").value = safeNum(b.iva);
+  document.getElementById("despDefault").value = safeNum(b.despDefault);
+  document.getElementById("desp").value = safeNum(b.despDefault);
+
+  // ✅ COBRO
+  document.getElementById("superficieM2").value = safeNum(b.superficieM2);
+  document.getElementById("jornadas").value = safeNum(b.jornadas);
+  document.getElementById("cobroModo").value = b.cobroModo || "fixed";
+  document.getElementById("cobroValor").value = safeNum(b.cobroValor);
+  updateCobroUI();
+}
+function pullBudgetFormIntoModel(){
+  const b = getActive();
+  b.cliente = document.getElementById("cliente").value || "";
+  b.fecha = document.getElementById("fecha").value || todayISO();
+  b.moneda = document.getElementById("moneda").value || "$";
+  b.obra = document.getElementById("obra").value || "";
+  b.gg = safeNum(document.getElementById("gg").value);
+  b.utilidad = safeNum(document.getElementById("utilidad").value);
+  b.utilBase = document.getElementById("utilBase").value || "directo_gg";
+  b.cont = safeNum(document.getElementById("cont").value);
+  b.desc = safeNum(document.getElementById("desc").value);
+  b.iva = safeNum(document.getElementById("iva").value);
+  b.despDefault = safeNum(document.getElementById("despDefault").value);
+
+  // ✅ COBRO
+  b.superficieM2 = safeNum(document.getElementById("superficieM2").value);
+  b.jornadas = safeNum(document.getElementById("jornadas").value);
+  b.cobroModo = document.getElementById("cobroModo").value || "fixed";
+  b.cobroValor = safeNum(document.getElementById("cobroValor").value);
+
+  return b;
+}
+async function saveBudget(){
+  const b = pullBudgetFormIntoModel();
+  const f = document.getElementById("logoFile").files?.[0];
+  if(f) b.logoDataUrl = await fileToDataURL(f);
+  saveAllBudgets(budgets);
+  renderBudgetSelect();
+  recalc();
+  alert("Guardado.");
+}
+function autoSaveMaybe(){
+  const s = getSettings();
+  document.getElementById("badgeAutosave").textContent = `Autosave: ${s.autosave?.toUpperCase() || "ON"}`;
+  if(s.autosave === "off") return;
+  pullBudgetFormIntoModel();
+  saveAllBudgets(budgets);
+}
+
+/** =========================
+ *  ITEMS
+ *  ========================= */
+function computeItemSubtotal(it){
+  const qtyMerma = safeNum(it.cantidad) * (1 + Math.max(0, safeNum(it.merma)));
+  return qtyMerma * safeNum(it.pu);
+}
+function addItem(){
+  const b = getActive();
+  const partida = document.getElementById("partida").value;
+  const itemName = (document.getElementById("item").value || "").trim();
+  const unidad = (document.getElementById("unidad").value || "").trim();
+  const cantidad = safeNum(document.getElementById("cantidad").value);
+  const pu = safeNum(document.getElementById("pu").value);
+  const merma = safeNum(document.getElementById("desp").value)/100;
+  const nota = (document.getElementById("notaItem").value || "").trim();
+  if(!itemName) return alert("Escribe el nombre del ítem.");
+  if(!(cantidad>0)) return alert("Cantidad inválida.");
+  b.items.push({id:crypto.randomUUID(), partida, item:itemName, unidad, cantidad, merma, pu, nota, subtotal:0});
+  document.getElementById("item").value="";
+  document.getElementById("notaItem").value="";
+  document.getElementById("cantidad").value="1";
+  document.getElementById("pu").value="0";
+  document.getElementById("desp").value=document.getElementById("despDefault").value || "0";
+  autoSaveMaybe(); renderItems(); recalc();
+}
+function renderItems(){
+  const b = getActive();
+  const tb = document.querySelector("#tabla tbody");
+  tb.innerHTML = "";
+  b.items.forEach((it, idx)=>{
+    it.subtotal = computeItemSubtotal(it);
+    const tr = document.createElement("tr");
+    tr.ondblclick = ()=> editItem(idx);
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${esc(it.partida)}</td>
+      <td>${esc(it.item)}${it.nota?`<div class="small">${esc(it.nota)}</div>`:""}</td>
+      <td>${esc(it.unidad||"")}</td>
+      <td class="right">${fmtQty(it.cantidad)}</td>
+      <td class="right">${(safeNum(it.merma)*100).toFixed(2)}%</td>
+      <td class="right">${fmtMoney(it.pu)}</td>
+      <td class="right">${fmtMoney(it.subtotal)}</td>
+      <td class="actions">
+        <button class="btn ghost" onclick="editItem(${idx})">Editar</button>
+        <button class="btn danger" onclick="removeItem(${idx})">Eliminar</button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  });
+  document.getElementById("badgeItems").textContent = `${b.items.length} ítems`;
+  refreshCatalogDatalist();
+  renderResumen();
+}
+function editItem(idx){
+  const b = getActive();
+  const it = b.items[idx];
+  if(!it) return;
+  const item = prompt("Ítem:", it.item); if(item===null) return;
+  const partida = prompt("Partida:", it.partida) ?? it.partida;
+  const unidad = prompt("Unidad:", it.unidad || "") ?? it.unidad;
+  const cantidad = safeNum(prompt("Cantidad:", String(it.cantidad)));
+  const pu = safeNum(prompt("Precio unitario:", String(it.pu)));
+  const merma = safeNum(prompt("Merma %:", String((safeNum(it.merma)*100).toFixed(2))))/100;
+  const nota = prompt("Nota (opcional):", it.nota || "") ?? it.nota;
+  it.partida=partida; it.item=item; it.unidad=unidad; it.cantidad=cantidad; it.pu=pu; it.merma=merma; it.nota=nota;
+  autoSaveMaybe(); renderItems(); recalc();
+}
+function removeItem(idx){
+  const b = getActive();
+  b.items.splice(idx,1);
+  autoSaveMaybe(); renderItems(); recalc();
+}
+function clearItems(){
+  const b = getActive();
+  if(!confirm("¿Vaciar todos los ítems del presupuesto actual?")) return;
+  b.items=[];
+  autoSaveMaybe(); renderItems(); recalc();
+}
+
+/** =========================
+ *  RESUMEN / TOTALES
+ *  ========================= */
+function computeTotals(b){
+  const directo = b.items.reduce((a,it)=>a + computeItemSubtotal(it), 0);
+  const gg = directo * (safeNum(b.gg)/100);
+  const baseUtil = (b.utilBase==="directo") ? directo : (directo + gg);
+  const util = baseUtil * (safeNum(b.utilidad)/100);
+  const cont = (directo + gg + util) * (safeNum(b.cont)/100);
+
+  // ✅ HONORARIOS según modo
+  const honor = computeHonorarios(b, directo);
+
+  const desc = (directo + gg + util + cont + honor) * (safeNum(b.desc)/100);
+  const sub = (directo + gg + util + cont + honor) - desc;
+  const iva = sub * (safeNum(b.iva)/100);
+  const total = sub + iva;
+  return {directo, gg, util, cont, honor, desc, sub, iva, total};
+}
+function recalc(){
+  const b = pullBudgetFormIntoModel();
+  const t = computeTotals(b);
+
+  document.getElementById("kpiDirecto").textContent = fmtMoney(t.directo);
+  document.getElementById("kpiGG").textContent = fmtMoney(t.gg);
+  document.getElementById("kpiUtil").textContent = fmtMoney(t.util);
+  document.getElementById("kpiCont").textContent = fmtMoney(t.cont);
+  document.getElementById("kpiHonor").textContent = fmtMoney(t.honor);
+  document.getElementById("kpiDesc").textContent = fmtMoney(t.desc);
+  document.getElementById("kpiSub").textContent = fmtMoney(t.sub);
+  document.getElementById("kpiIVA").textContent = fmtMoney(t.iva);
+  document.getElementById("kpiTotal").textContent = fmtMoney(t.total);
+  document.getElementById("badgeTotal").textContent = `Total: ${fmtMoney(t.total)}`;
+
+  document.getElementById("cobroCalc").textContent = `Honorarios calculados: ${fmtMoney(t.honor)}`;
+
+  autoSaveMaybe();
+  renderResumen();
+}
+let resumenVisible=false;
+function toggleResumen(){
+  resumenVisible = !resumenVisible;
+  document.getElementById("resumenWrap").classList.toggle("hide", !resumenVisible);
+}
+function renderResumen(){
+  const b = getActive();
+  const directo = b.items.reduce((a,it)=>a + computeItemSubtotal(it), 0) || 0.0000001;
+  const map = new Map();
+  for(const it of b.items){
+    const key = it.partida || "Sin partida";
+    map.set(key, (map.get(key)||0) + computeItemSubtotal(it));
+  }
+  const rows = Array.from(map.entries()).sort((a,b)=>b[1]-a[1]);
+  const tb = document.querySelector("#tablaResumen tbody");
+  tb.innerHTML = "";
+  for(const [p, val] of rows){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${esc(p)}</td><td class="right">${fmtMoney(val)}</td><td class="right">${((val/directo)*100).toFixed(1)}%</td>`;
+    tb.appendChild(tr);
+  }
+}
+
+/** =========================
+ *  PLANTILLAS
+ *  ========================= */
+function applyTemplate(){
+  const t = document.getElementById("plantilla").value;
+  if(!t) return alert("Selecciona una plantilla.");
+  const b = getActive();
+  if(b.items.length>0 && !confirm("Agrega ítems base (no borra). ¿Continuar?")) return;
+  const add = (partida,item,unidad,cantidad,pu,merma,nota="")=>{
+    b.items.push({id:crypto.randomUUID(), partida, item, unidad, cantidad, pu, merma:(safeNum(merma)/100), nota, subtotal:0});
+  };
+  if(t==="techo"){
+    add("Preliminares","Movilización y replanteo","gl",1,0,0,"");
+    add("Estructura","Estructura (perfiles / madera)","m2",1,0,0,"Ajustar por m² o por kg/ml");
+    add("Techumbre","Cubierta zincalum / similar","m2",1,0,5,"Merma típica 5%");
+    add("Techumbre","Aislación (opcional)","m2",1,0,3,"");
+    add("Techumbre","Canaletas y bajadas","ml",1,0,0,"");
+    add("Mano de obra","Cuadrilla montaje","jor",1,0,0,"");
+    add("Transporte","Fletes","viaje",1,0,0,"");
+  }else if(t==="galpon"){
+    add("Preliminares","Movilización y replanteo","gl",1,0,0,"");
+    add("Obra gruesa","Excavación y fundaciones","gl",1,0,0,"");
+    add("Estructura","Estructura metálica (material)","kg",1,0,0,"");
+    add("Estructura","Montaje estructura (MO/subcontrato)","m2",1,0,0,"");
+    add("Techumbre","Cubierta y cumbreras","m2",1,0,5,"");
+    add("Terminaciones","Portones / accesos","gl",1,0,0,"");
+    add("Instalaciones","Eléctrica básica","gl",1,0,0,"");
+    add("Transporte","Fletes","viaje",1,0,0,"");
+  }else if(t==="casa"){
+    add("Preliminares","Instalación de faena","gl",1,0,0,"");
+    add("Obra gruesa","Movimiento de tierra","gl",1,0,0,"");
+    add("Obra gruesa","Fundaciones","gl",1,0,0,"");
+    add("Estructura","Muros / estructura","m2",1,0,0,"");
+    add("Techumbre","Techumbre completa","m2",1,0,5,"");
+    add("Instalaciones","Sanitaria","gl",1,0,0,"");
+    add("Instalaciones","Eléctrica","gl",1,0,0,"");
+    add("Terminaciones","Revestimientos / pisos","m2",1,0,0,"");
+    add("Terminaciones","Pinturas","m2",1,0,0,"");
+    add("Mano de obra","Cuadrilla general","jor",1,0,0,"");
+  }
+  autoSaveMaybe(); renderItems(); recalc();
+}
+
+/** =========================
+ *  QUICK m²
+ *  ========================= */
+function quickAddSingle(){
+  const m2 = safeNum(document.getElementById("quickM2").value);
+  const pu = safeNum(document.getElementById("quickPU").value);
+  if(!(m2>0)) return alert("Superficie inválida.");
+  if(!(pu>0)) return alert("Precio por m² inválido.");
+  const b = getActive();
+  b.items.push({id:crypto.randomUUID(), partida:"Otros", item:`Estimación global ${m2} m²`, unidad:"m2", cantidad:m2, merma:0, pu, nota:"Generado por Medición rápida", subtotal:0});
+
+  // ✅ Atajo: si estás midiendo por m², rellena superficie del presupuesto
+  b.superficieM2 = m2;
+
+  autoSaveMaybe(); renderItems(); recalc(); showTab("pres");
+}
+function quickGenerate(){
+  const tipo = document.getElementById("quickTipo").value;
+  const m2 = safeNum(document.getElementById("quickM2").value);
+  const puObjetivo = safeNum(document.getElementById("quickPU").value);
+  if(!(m2>0)) return alert("Superficie inválida.");
+  const b = getActive();
+
+  // ✅ Atajo: rellena superficie del presupuesto
+  b.superficieM2 = m2;
+
+  const totalObjetivo = puObjetivo>0 ? (m2*puObjetivo) : 0;
+  const push = (partida, item, unidad, cantidad, pu, merma, nota="")=>{
+    b.items.push({id:crypto.randomUUID(), partida, item, unidad, cantidad, pu, merma:(safeNum(merma)/100), nota, subtotal:0});
+  };
+  if(totalObjetivo>0){
+    const dist = (tipo==="techo")
+      ? [["Estructura","Estructura (estimación)",0.35],["Techumbre","Cubierta + accesorios (estimación)",0.40],["Mano de obra","Mano de obra (estimación)",0.20],["Transporte","Transporte y varios (estimación)",0.05]]
+      : (tipo==="galpon")
+      ? [["Obra gruesa","Fundaciones (estimación)",0.18],["Estructura","Estructura + montaje (estimación)",0.45],["Techumbre","Cubierta (estimación)",0.22],["Terminaciones","Portones/otros (estimación)",0.10],["Transporte","Transporte y varios (estimación)",0.05]]
+      : [["Obra gruesa","Obra gruesa (estimación)",0.35],["Estructura","Estructura (estimación)",0.20],["Techumbre","Techumbre (estimación)",0.12],["Instalaciones","Instalaciones (estimación)",0.18],["Terminaciones","Terminaciones (estimación)",0.15]];
+    for(const [p, name, frac] of dist){
+      const val = totalObjetivo * frac;
+      push(p, `${name} (${m2} m²)`, "gl", 1, val, 0, "Generado por reparto por m² (objetivo)");
+    }
+  }else{
+    if(tipo==="techo"){
+      push("Estructura","Estructura (por m²)","m2",m2,0,0,"Completar P.U. o desglosar");
+      push("Techumbre","Cubierta (por m²)","m2",m2,0,5,"Merma típica");
+      push("Mano de obra","Montaje (por m²)","m2",m2,0,0,"");
+      push("Transporte","Fletes","viaje",1,0,0,"");
+    }else if(tipo==="galpon"){
+      push("Obra gruesa","Fundaciones (estimación)","gl",1,0,0,"");
+      push("Estructura","Estructura (por m²)","m2",m2,0,0,"");
+      push("Techumbre","Cubierta (por m²)","m2",m2,0,5,"");
+      push("Terminaciones","Portones/otros","gl",1,0,0,"");
+    }else{
+      push("Obra gruesa","Obra gruesa (por m²)","m2",m2,0,0,"");
+      push("Instalaciones","Instalaciones (por m²)","m2",m2,0,0,"");
+      push("Terminaciones","Terminaciones (por m²)","m2",m2,0,0,"");
+    }
+  }
+  autoSaveMaybe(); renderItems(); recalc(); showTab("pres");
+}
+
+/** =========================
+ *  CATALOGO CRUD
+ *  ========================= */
+function addCatalogItem(){
+  const name = (document.getElementById("catName").value||"").trim();
+  const tipo = document.getElementById("catNewTipo").value;
+  const unidad = (document.getElementById("catUnit").value||"").trim();
+  const pu = safeNum(document.getElementById("catPU").value);
+  const merma = safeNum(document.getElementById("catMerma").value);
+  if(!name) return alert("Nombre requerido.");
+  const existing = catalog.find(x=>x.name.toLowerCase()===name.toLowerCase());
+  if(existing){
+    if(!confirm("Ya existe. ¿Actualizarlo?")) return;
+    existing.tipo=tipo; existing.unidad=unidad; existing.pu=pu; existing.merma=merma;
+  }else catalog.push({name,tipo,unidad,pu,merma});
+  catalog.sort((a,b)=>a.name.localeCompare(b.name));
+  saveCatalog(catalog);
+  document.getElementById("catName").value="";
+  document.getElementById("catPU").value="0";
+  document.getElementById("catMerma").value="0";
+  renderCatalog(); refreshCatalogDatalist();
+}
+function renderCatalog(){
+  const q = (document.getElementById("catSearch")?.value || "").toLowerCase();
+  const tipo = document.getElementById("catTipo")?.value || "";
+  const tb = document.querySelector("#tablaCatalogo tbody");
+  if(!tb) return;
+  tb.innerHTML = "";
+  const list = catalog.filter(c=>{
+    const okQ = !q || c.name.toLowerCase().includes(q);
+    const okT = !tipo || c.tipo===tipo;
+    return okQ && okT;
+  });
+  for(const c of list){
+    const tr = document.createElement("tr");
+    tr.ondblclick = ()=> editCatalogRow(c.name);
+    tr.innerHTML = `
+      <td>${esc(c.name)}</td>
+      <td>${esc(c.tipo)}</td>
+      <td>${esc(c.unidad||"")}</td>
+      <td class="right">${fmtMoney(c.pu)}</td>
+      <td class="right">${safeNum(c.merma).toFixed(2)}%</td>
+      <td class="actions">
+        <button class="btn ghost" onclick="useCatalog('${esc(c.name).replaceAll("&#39;","\\'")}')">Usar</button>
+        <button class="btn danger" onclick="deleteCatalog('${esc(c.name).replaceAll("&#39;","\\'")}')">Eliminar</button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  }
+}
+function editCatalogRow(name){
+  const c = catalog.find(x=>x.name===name);
+  if(!c) return;
+  const n = prompt("Nombre:", c.name); if(n===null) return;
+  const t = prompt("Tipo:", c.tipo) ?? c.tipo;
+  const u = prompt("Unidad:", c.unidad||"") ?? c.unidad;
+  const pu = safeNum(prompt("Precio unitario:", String(c.pu)));
+  const m = safeNum(prompt("Merma %:", String(safeNum(c.merma).toFixed(2))));
+  c.name=n; c.tipo=t; c.unidad=u; c.pu=pu; c.merma=m;
+  catalog = catalog.filter((x,i,arr)=> i===arr.findIndex(y=>y.name.toLowerCase()===x.name.toLowerCase()));
+  catalog.sort((a,b)=>a.name.localeCompare(b.name));
+  saveCatalog(catalog);
+  renderCatalog(); refreshCatalogDatalist();
+}
+function deleteCatalog(name){
+  const c = catalog.find(x=>x.name===name);
+  if(!c) return;
+  if(!confirm(`¿Eliminar "${name}" del catálogo?`)) return;
+  catalog = catalog.filter(x=>x.name!==name);
+  saveCatalog(catalog);
+  renderCatalog(); refreshCatalogDatalist();
+}
+function useCatalog(name){
+  const c = catalog.find(x=>x.name===name) || catalog.find(x=>x.name.toLowerCase()===name.toLowerCase());
+  if(!c) return alert("No encontrado en catálogo.");
+  showTab("pres");
+  document.getElementById("item").value = c.name;
+  document.getElementById("unidad").value = c.unidad || "";
+  document.getElementById("pu").value = safeNum(c.pu);
+  const curMerma = document.getElementById("desp").value;
+  if(!curMerma || safeNum(curMerma)===0) document.getElementById("desp").value = safeNum(c.merma);
+}
+document.getElementById("item").addEventListener("change", ()=>{
+  const name = (document.getElementById("item").value||"").trim();
+  const c = catalog.find(x=>x.name.toLowerCase()===name.toLowerCase());
+  if(c){
+    document.getElementById("unidad").value = c.unidad || document.getElementById("unidad").value;
+    document.getElementById("pu").value = safeNum(c.pu);
+    const curMerma = document.getElementById("desp").value;
+    if(!curMerma || safeNum(curMerma)===0) document.getElementById("desp").value = safeNum(c.merma);
+  }
+});
+
+/** =========================
+ *  EXPORTS
+ *  ========================= */
+function exportCSV(){
+  const b = pullBudgetFormIntoModel();
+  const header = ["Partida","Item","Nota","Unidad","Cantidad","Merma_%","Precio_Unitario","Subtotal"];
+  const rows = b.items.map(it=>[
+    it.partida, it.item, it.nota||"", it.unidad||"",
+    it.cantidad, (safeNum(it.merma)*100).toFixed(2), it.pu, computeItemSubtotal(it)
+  ]);
+  const tot = computeTotals(b);
+
+  rows.push([]);
+  rows.push(["RESUMEN","","","","","","",""]);
+  rows.push(["Costo_directo","","","","","","",tot.directo]);
+  rows.push(["GG_%",b.gg,"","","","","",tot.gg]);
+  rows.push(["Utilidad_%",b.utilidad,"","","","","",tot.util]);
+  rows.push(["Contingencia_%",b.cont,"","","","","",tot.cont]);
+
+  // ✅ Cobro / honorarios
+  rows.push(["Cobro_modo",b.cobroModo,"","","","","",""]);
+  rows.push(["Cobro_valor",b.cobroValor,"","","","","",""]);
+  rows.push(["Superficie_m2",b.superficieM2,"","","","","",""]);
+  rows.push(["Jornadas",b.jornadas,"","","","","",""]);
+  rows.push(["Honorarios","","","","","","",tot.honor]);
+
+  rows.push(["Descuento_%",b.desc,"","","","","",tot.desc]);
+  rows.push(["Subtotal_sin_IVA","","","","","","",tot.sub]);
+  rows.push(["IVA_%",b.iva,"","","","","",tot.iva]);
+  rows.push(["TOTAL","","","","","","",tot.total]);
+
+  const csv = [header, ...rows]
+    .map(r => r.map(v => `"${String(v ?? "").replaceAll('"','""')}"`).join(";"))
+    .join("\n");
+
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `presupuesto_${(b.fecha || "sin_fecha")}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function exportJSON(){
+  const payload = { budgets, activeId, catalog, settings: getSettings(), exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `backup_presupuestos_${todayISO()}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function importJSON(){
+  const inp = document.createElement("input");
+  inp.type="file"; inp.accept="application/json";
+  inp.onchange = async ()=>{
+    const f = inp.files?.[0]; if(!f) return;
+    const txt = await f.text();
+    try{
+      const payload = JSON.parse(txt);
+      if(Array.isArray(payload.budgets)) budgets = payload.budgets;
+      if(payload.activeId) activeId = payload.activeId;
+      if(Array.isArray(payload.catalog)) { catalog = payload.catalog; saveCatalog(catalog); }
+      if(payload.settings) setSettings(payload.settings);
+      saveAllBudgets(budgets);
+      refreshCatalogDatalist();
+      renderBudgetSelect();
+      setActive(getActive());
+      alert("Importado.");
+    }catch{ alert("JSON inválido."); }
+  };
+  inp.click();
+}
+
+function exportCatalogJSON(){
+  const blob = new Blob([JSON.stringify({catalog, exportedAt:new Date().toISOString()},null,2)], {type:"application/json;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `catalogo_${todayISO()}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function importCatalogJSON(){
+  const inp = document.createElement("input");
+  inp.type="file"; inp.accept="application/json";
+  inp.onchange = async ()=>{
+    const f = inp.files?.[0]; if(!f) return;
+    const txt = await f.text();
+    try{
+      const payload = JSON.parse(txt);
+      if(Array.isArray(payload.catalog)){
+        const map = new Map(catalog.map(x=>[x.name.toLowerCase(), x]));
+        for(const it of payload.catalog){
+          if(!it?.name) continue;
+          map.set(it.name.toLowerCase(), {
+            name:String(it.name), tipo: it.tipo||"Otro", unidad: it.unidad||"",
+            pu: safeNum(it.pu), merma: safeNum(it.merma)
+          });
+        }
+        catalog = Array.from(map.values()).sort((a,b)=>a.name.localeCompare(b.name));
+        saveCatalog(catalog);
+        renderCatalog();
+        refreshCatalogDatalist();
+        alert("Catálogo importado/mezclado.");
+      }else alert("No trae 'catalog'.");
+    }catch{ alert("JSON inválido."); }
+  };
+  inp.click();
+}
+
+/** =========================
+ *  PDF
+ *  ========================= */
+async function exportPDF(){
+  const b = pullBudgetFormIntoModel();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:"pt", format:"a4"});
+  const W = doc.internal.pageSize.getWidth();
+  const s = getSettings();
+  const showNotes = (s.pdfNotes !== "off");
+
+  if(b.logoDataUrl){
+    try{ doc.addImage(b.logoDataUrl, "PNG", 40, 28, 80, 40); } catch {}
+  }
+  doc.setFontSize(16);
+  doc.text("Presupuesto de Construcción", 140, 50);
+  doc.setFontSize(10);
+  doc.text(`Cliente: ${b.cliente||"-"}`, 40, 90);
+  doc.text(`Fecha: ${b.fecha||"-"}`, 40, 106);
+  doc.text(`Moneda: ${b.moneda||"-"}`, 40, 122);
+
+  // ✅ Línea de cobro en PDF
+  doc.text(`Tu cobro (modo): ${b.cobroModo || "fixed"}`, 40, 138);
+  doc.text(`Superficie m²: ${fmtQty(b.superficieM2)}  |  Jornadas: ${fmtQty(b.jornadas)}  |  Valor: ${fmtMoney(b.cobroValor)}`, 40, 154);
+
+  doc.setFontSize(10);
+  doc.text("Obra/Descripción:", 40, 174);
+  doc.setFontSize(9);
+  doc.text(doc.splitTextToSize(b.obra||"-", W-80), 40, 188);
+
+  const items = b.items.map((it, i)=>[
+    String(i+1), it.partida||"", it.item||"", it.unidad||"",
+    String(it.cantidad ?? ""), (safeNum(it.merma)*100).toFixed(2) + "%",
+    fmtMoney(it.pu), fmtMoney(computeItemSubtotal(it)),
+    showNotes ? (it.nota||"") : ""
+  ]);
+
+  doc.autoTable({
+    startY: 230,
+    head: [[ "#","Partida","Ítem","Un.","Cant.","Merma","P.U.","Subtotal", ...(showNotes?["Nota"]:[]) ]],
+    body: items,
+    styles: { fontSize: 8, cellPadding: 4 },
+    headStyles: { fontSize: 8 },
+    columnStyles: { 0:{cellWidth:18}, 4:{halign:"right"}, 5:{halign:"right"}, 7:{halign:"right"} },
+  });
+
+  const t = computeTotals(b);
+  const y = doc.lastAutoTable.finalY + 16;
+  doc.setFontSize(10);
+  doc.text("Resumen", 40, y);
+
+  const resumen = [
+    ["Costo directo", fmtMoney(t.directo)],
+    [`Gastos generales (${safeNum(b.gg).toFixed(2)}%)`, fmtMoney(t.gg)],
+    [`Utilidad (${safeNum(b.utilidad).toFixed(2)}%)`, fmtMoney(t.util)],
+    [`Contingencia (${safeNum(b.cont).toFixed(2)}%)`, fmtMoney(t.cont)],
+    [honorariosLabelForPDF(b), fmtMoney(t.honor)],
+    [`Descuento (${safeNum(b.desc).toFixed(2)}%)`, "- " + fmtMoney(t.desc)],
+    ["Subtotal (sin IVA)", fmtMoney(t.sub)],
+    [`IVA (${safeNum(b.iva).toFixed(2)}%)`, fmtMoney(t.iva)],
+    ["TOTAL", fmtMoney(t.total)]
+  ];
+  doc.autoTable({
+    startY: y+8,
+    head: [["Concepto","Monto"]],
+    body: resumen,
+    styles: { fontSize: 9, cellPadding: 4 },
+    columnStyles: { 1:{halign:"right"} }
+  });
+
+  doc.save(`presupuesto_${(b.fecha||"sin_fecha")}.pdf`);
+}
+
+/** =========================
+ *  SETTINGS
+ *  ========================= */
+function renderSettings(){
+  const s = getSettings();
+  document.getElementById("autosave").value = s.autosave || "on";
+  document.getElementById("decimals").value = String(s.decimals ?? "2");
+  document.getElementById("pdfNotes").value = s.pdfNotes || "on";
+}
+["autosave","decimals","pdfNotes"].forEach(id=>{
+  document.getElementById(id).addEventListener("change", ()=>{
+    const s = getSettings();
+    s.autosave = document.getElementById("autosave").value;
+    s.decimals = document.getElementById("decimals").value;
+    s.pdfNotes = document.getElementById("pdfNotes").value;
+    setSettings(s);
+    recalc();
+    renderItems();
+  });
+});
+
+/** =========================
+ *  UTIL
+ *  ========================= */
+function fileToDataURL(file){
+  return new Promise((res, rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+/** =========================
+ *  INIT
+ *  ========================= */
+function init(){
+  renderBudgetSelect();
+  refreshCatalogDatalist();
+  const b = getActive();
+  document.getElementById("fecha").value = b.fecha || todayISO();
+  fillBudgetForm(b);
+  renderItems();
+  recalc();
+  renderSettings();
+  renderCatalog();
+
+  // ✅ Actualiza etiqueta del input según modo
+  document.getElementById("cobroModo").addEventListener("change", ()=>{
+    updateCobroUI();
+    recalc();
+  });
+
+  // Inputs que recalculan
+  [
+    "cliente","fecha","moneda","obra",
+    "gg","utilidad","utilBase","cont","desc","iva","despDefault",
+    "superficieM2","jornadas","cobroValor"
+  ].forEach(id=>{
+    document.getElementById(id).addEventListener("input", ()=>{
+      if(id==="despDefault") document.getElementById("desp").value = document.getElementById("despDefault").value || "0";
+      recalc();
+    });
+    document.getElementById(id).addEventListener("change", recalc);
+  });
+
+  ["item","unidad","cantidad","pu","desp","notaItem"].forEach(id=>{
+    document.getElementById(id).addEventListener("keydown", (e)=>{
+      if(e.key==="Enter"){ e.preventDefault(); addItem(); }
+    });
+  });
+
+  updateCobroUI();
+}
+init();
+</script>
+</body>
+</html>
